@@ -1,0 +1,94 @@
+/* =========================================================
+   AMIT AI — responsive.css
+   Breakpoint-specific layout adjustments only.
+   Component styling itself lives in its own file.
+   ========================================================= */
+
+/* =========================================================
+   DESKTOP / TABLET LANDSCAPE (>= 900px)
+   Sidebar becomes a permanently docked panel, not an
+   off-canvas overlay.
+   ========================================================= */
+@media (min-width:900px){
+  #sidebar{
+    position:relative;
+    transform:none;
+  }
+  #sidebar.closed{
+    display:none;
+  }
+  #sidebar-overlay{
+    display:none !important;
+  }
+
+  #hero-logo{ width:104px; height:104px; }
+  #hero-title{ font-size:26px; }
+
+  .msg-row{ padding:20px 24px; }
+}
+
+/* =========================================================
+   WIDE DESKTOP (>= 1400px)
+   Give the chat column a touch more breathing room.
+   ========================================================= */
+@media (min-width:1400px){
+  .msg-row,
+  #input-inner{
+    max-width:900px;
+  }
+}
+
+/* =========================================================
+   TABLET PORTRAIT / SMALL LAPTOP (600px - 899px)
+   Sidebar still off-canvas (overlay behavior from sidebar.css),
+   just slightly narrower.
+   ========================================================= */
+@media (min-width:600px) and (max-width:899px){
+  #sidebar{ width:260px; min-width:260px; }
+}
+
+/* =========================================================
+   MOBILE (<= 600px)
+   ========================================================= */
+@media (max-width:600px){
+  #sidebar{ width:82vw; min-width:0; }
+
+  #hero-logo{ width:80px; height:80px; border-radius:22px; }
+  #hero-logo span{ font-size:28px; }
+  #hero-title{ font-size:21px; }
+  #hero-sub{ font-size:13px; }
+
+  .msg-row{ padding:14px 12px; gap:10px; }
+  .avatar{ width:26px; height:26px; }
+
+  #input-wrap{ padding:8px 10px 12px; }
+  #input-bar{ padding:6px 6px 6px 8px; }
+  #text-input{ font-size:14.5px; }
+
+  #plus-menu{ min-width:170px; bottom:56px; }
+
+  .attach-chip{ width:48px; height:48px; }
+
+  #chat-logo-corner{ width:30px; height:30px; top:6px; right:10px; }
+}
+
+/* =========================================================
+   VERY SMALL PHONES (<= 400px)
+   ========================================================= */
+@media (max-width:400px){
+  #topbar-title{ font-size:14.5px; }
+  .msg-text{ font-size:14px; }
+  .msg-role{ font-size:12px; }
+  #footer-note{ font-size:10.5px; }
+  .code-block pre{ font-size:12px; padding:10px; }
+}
+
+/* =========================================================
+   SHORT VIEWPORTS (landscape phones, small height)
+   Keep the welcome logo from pushing input off-screen.
+   ========================================================= */
+@media (max-height:480px){
+  #hero-logo{ width:56px; height:56px; }
+  #hero-title{ font-size:18px; }
+  #hero-sub{ display:none; }
+}

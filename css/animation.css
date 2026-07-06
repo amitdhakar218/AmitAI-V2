@@ -1,0 +1,88 @@
+/* =========================================================
+   AMIT AI — animation.css
+   All @keyframes and motion effects live here only.
+   Structural/layout styling stays in the other CSS files.
+   ========================================================= */
+
+/* ---------- 3D floating logo (welcome hero + corner logo) ---------- */
+@keyframes float3d{
+  0%{   transform:rotateY(0deg)   rotateX(0deg)  translateY(0); }
+  25%{  transform:rotateY(15deg)  rotateX(6deg)  translateY(-6px); }
+  50%{  transform:rotateY(0deg)   rotateX(0deg)  translateY(0); }
+  75%{  transform:rotateY(-15deg) rotateX(-6deg) translateY(-6px); }
+  100%{ transform:rotateY(0deg)   rotateX(0deg)  translateY(0); }
+}
+#hero-logo,
+#chat-logo-corner{
+  animation:float3d 4.5s ease-in-out infinite;
+}
+
+/* ---------- Mic recording pulse ---------- */
+@keyframes pulse{
+  0%{   box-shadow:0 0 0 0 rgba(229,57,53,.5); }
+  70%{  box-shadow:0 0 0 10px rgba(229,57,53,0); }
+  100%{ box-shadow:0 0 0 0 rgba(229,57,53,0); }
+}
+#mic-btn.recording{
+  background:var(--danger);color:#fff;animation:pulse 1s infinite;
+}
+
+/* ---------- Message entrance animation ---------- */
+@keyframes fadeInUp{
+  from{ opacity:0; transform:translateY(8px); }
+  to{   opacity:1; transform:translateY(0); }
+}
+.msg-row{
+  animation:fadeInUp .25s ease both;
+}
+
+/* ---------- Sidebar slide (transition already on #sidebar in sidebar.css;
+   this keyframe is used for the mobile overlay fade-in) ---------- */
+@keyframes overlayFadeIn{
+  from{ opacity:0; }
+  to{   opacity:1; }
+}
+#sidebar-overlay.show{
+  animation:overlayFadeIn .2s ease;
+}
+
+/* ---------- Streaming cursor (blinking bar at end of AI text while streaming) ---------- */
+@keyframes cursorBlink{
+  0%,50%{ opacity:1; }
+  51%,100%{ opacity:0; }
+}
+.stream-cursor{
+  display:inline-block;width:2px;height:1em;background:currentColor;
+  margin-left:2px;vertical-align:text-bottom;animation:cursorBlink 0.9s step-start infinite;
+}
+
+/* ---------- Plus-menu open/close pop ---------- */
+@keyframes menuPop{
+  from{ opacity:0; transform:translateY(6px) scale(.98); }
+  to{   opacity:1; transform:translateY(0) scale(1); }
+}
+#plus-menu.show{
+  animation:menuPop .15s ease;
+}
+
+/* ---------- Dropzone pulse when dragging a file over the window ---------- */
+@keyframes dropPulse{
+  0%,100%{ border-color:var(--accent); }
+  50%{ border-color:var(--accent-dark); }
+}
+#dropzone-overlay.show{
+  animation:dropPulse 1.2s ease-in-out infinite;
+}
+
+/* ---------- Respect reduced-motion preference ---------- */
+@media (prefers-reduced-motion: reduce){
+  #hero-logo,
+  #chat-logo-corner,
+  .msg-row,
+  #sidebar-overlay.show,
+  #plus-menu.show,
+  #dropzone-overlay.show,
+  #mic-btn.recording{
+    animation:none !important;
+  }
+}

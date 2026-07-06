@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Amit AI</title>
+
+<!-- =========================================================
+     CSS — BASE / DESIGN TOKENS / APP SHELL / INPUT BAR
+     ========================================================= -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- =========================================================
+     CSS — SIDEBAR (history list, search, new chat, overlay)
+     ========================================================= -->
+<link rel="stylesheet" href="css/sidebar.css">
+
+<!-- =========================================================
+     CSS — CHAT AREA (message rows, bubbles, markdown, code blocks)
+     ========================================================= -->
+<link rel="stylesheet" href="css/chat.css">
+
+<!-- =========================================================
+     CSS — ANIMATIONS (3D logo float, typing dots, transitions)
+     ========================================================= -->
+<link rel="stylesheet" href="css/animation.css">
+
+<!-- =========================================================
+     CSS — DARK MODE (scoped under body.dark-mode)
+     ========================================================= -->
+<link rel="stylesheet" href="css/darkmode.css">
+
+<!-- =========================================================
+     CSS — RESPONSIVE (mobile / tablet / desktop breakpoints)
+     ========================================================= -->
+<link rel="stylesheet" href="css/responsive.css">
+
+</head>
+<body>
+<div id="app">
+
+  <div id="sidebar-overlay"></div>
+
+  <!-- ============== SIDEBAR ============== -->
+  <div id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-btn" id="new-chat-btn">
+        <span>➕</span><span>Nayi Chat (New Chat)</span>
+      </div>
+      <div class="search-box">
+        <span>🔍</span>
+        <input id="search-input" type="text" placeholder="Chat history search karein...">
+      </div>
+    </div>
+    <div class="history-label">History</div>
+    <div id="chat-history"></div>
+    <div class="sidebar-bottom">
+      <div class="logo-mini">A</div>
+      <div>Amit AI &middot; Local</div>
+      <button id="theme-toggle-btn" class="icon-btn" title="Dark / Light mode" style="margin-left:auto;">🌙</button>
+    </div>
+  </div>
+
+  <!-- ============== MAIN ============== -->
+  <div id="main">
+    <div id="topbar">
+      <button class="icon-btn" id="menu-btn" title="Menu">☰</button>
+      <div id="topbar-title"><span class="logo-mini" style="width:22px;height:22px;font-size:10px;">A</span> Amit AI</div>
+      <button class="icon-btn" id="new-chat-icon-btn" title="Nayi Chat">✏️</button>
+    </div>
+
+    <!-- Welcome / empty state -->
+    <div id="welcome">
+      <div id="hero-logo"><span>A</span></div>
+      <div id="hero-title">Amit AI</div>
+      <div id="hero-sub">Aap kis baare me baat karna chahte hain?</div>
+    </div>
+
+    <!-- Chat messages -->
+    <div id="chat-area">
+      <div id="chat-logo-corner"><span>A</span></div>
+    </div>
+
+    <!-- Drag & drop overlay -->
+    <div id="dropzone-overlay">
+      <div id="dropzone-box">📥 File yahan chhodein (drop) upload karne ke liye</div>
+    </div>
+
+    <!-- Input -->
+    <div id="input-wrap">
+      <div id="input-inner">
+        <div id="plus-menu">
+          <div class="plus-item" data-action="image">🖼️ Photo / Gallery se upload karein</div>
+          <div class="plus-item" data-action="camera">📷 Camera se photo lein</div>
+          <div class="plus-item" data-action="file">📎 File upload karein</div>
+          <div class="plus-item" data-action="pdf">📄 PDF upload karein</div>
+        </div>
+        <div id="attach-preview"></div>
+        <div id="input-bar">
+          <button class="round-btn" id="plus-btn" title="Add">➕</button>
+          <textarea id="text-input" rows="1" placeholder="Amit AI ko message likhein..."></textarea>
+          <button class="round-btn" id="mic-btn" title="Voice input">🎤</button>
+          <button class="round-btn" id="send-btn" disabled title="Send">➤</button>
+        </div>
+        <div id="footer-note">Amit AI local model se connected hai.</div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="file-image" accept="image/*" hidden>
+  <input type="file" id="file-camera" accept="image/*" capture="environment" hidden>
+  <input type="file" id="file-any" hidden>
+  <input type="file" id="file-pdf" accept="application/pdf" hidden>
+</div>
+
+<!-- =========================================================
+     JAVASCRIPT — LOAD ORDER = DEPENDENCY ORDER
+     Every file below is a normal script (NOT type="module").
+     Each file is an IIFE that attaches itself to window
+     (window.Utils, window.Api, window.Chat, etc.), so load
+     order matters: a module must load before anything that
+     depends on it.
+     ========================================================= -->
+
+<!-- utils.js — no dependencies. Everything else depends on this. -->
+<script src="js/utils.js"></script>
+
+<!-- api.js — depends on: (none, standalone backend caller) -->
+<script src="js/api.js"></script>
+
+<!-- memory.js — depends on: utils.js -->
+<script src="js/memory.js"></script>
+
+<!-- internet.js — depends on: utils.js -->
+<script src="js/internet.js"></script>
+
+<!-- plugins.js — depends on: utils.js -->
+<script src="js/plugins.js"></script>
+
+<!-- markdown.js — depends on: utils.js -->
+<script src="js/markdown.js"></script>
+
+<!-- theme.js — depends on: utils.js -->
+<script src="js/theme.js"></script>
+
+<!-- voice.js — depends on: utils.js -->
+<script src="js/voice.js"></script>
+
+<!-- ocr.js — depends on: utils.js -->
+<script src="js/ocr.js"></script>
+
+<!-- pdf.js — depends on: utils.js -->
+<script src="js/pdf.js"></script>
+
+<!-- upload.js — depends on: utils.js, pdf.js, ocr.js -->
+<script src="js/upload.js"></script>
+
+<!-- history.js — depends on: utils.js -->
+<script src="js/history.js"></script>
+
+<!-- sidebar.js — depends on: utils.js, history.js -->
+<script src="js/sidebar.js"></script>
+
+<!-- chat.js — depends on: utils.js, api.js, memory.js, internet.js,
+     plugins.js, markdown.js, voice.js, upload.js, history.js, sidebar.js -->
+<script src="js/chat.js"></script>
+
+<!-- app.js — entry point. Depends on: every module above (boots the app). -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

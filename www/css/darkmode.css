@@ -1,0 +1,106 @@
+/* =========================================================
+   AMIT AI — darkmode.css
+   Everything scoped under body.dark-mode so theme.js can
+   toggle dark mode with a single class add/remove.
+   No other file needs to change.
+   ========================================================= */
+
+body.dark-mode{
+  --bg:#212121;
+  --sidebar-bg:#171717;
+  --border:#2f2f2f;
+  --text:#ececec;
+  --text-soft:#9b9ba1;
+  --bubble-user:#2f2f2f;
+  --accent:#19c37d;
+  --accent-dark:#15a86a;
+  --danger:#ef5350;
+}
+
+/* ---------- Icon buttons / hovers ---------- */
+body.dark-mode .icon-btn:hover,
+body.dark-mode .round-btn:hover,
+body.dark-mode .msg-actions button:hover,
+body.dark-mode .plus-item:hover,
+body.dark-mode .history-item:hover{
+  background:#2a2a2a;
+}
+body.dark-mode .history-item.active{
+  background:#343434;
+}
+
+/* ---------- Sidebar / search / buttons that were hard-coded white ---------- */
+body.dark-mode .sidebar-btn,
+body.dark-mode .search-box,
+body.dark-mode #input-bar,
+body.dark-mode #plus-menu,
+body.dark-mode #dropzone-box{
+  background:#2a2a2a;
+  color:var(--text);
+}
+body.dark-mode .sidebar-btn:hover{
+  background:#343434;
+}
+
+/* ---------- Welcome hero logo shadow (uses fixed rgba, needs a dark variant) ---------- */
+body.dark-mode #hero-logo{
+  box-shadow:0 10px 30px rgba(25,195,125,.25), inset 0 2px 6px rgba(255,255,255,.12);
+}
+
+/* ---------- Blockquote / inline code hard-coded light backgrounds ---------- */
+body.dark-mode .msg-text blockquote{
+  background:#2a2a2a;
+  color:var(--text-soft);
+  border-left-color:#444;
+}
+body.dark-mode .msg-text code.inline-code{
+  background:#2f2f2f;
+  color:#e6e6e6;
+}
+
+/* ---------- Code block already dark by default; just tighten border in dark mode ---------- */
+body.dark-mode .code-block{
+  border-color:#3a3a3a;
+}
+body.dark-mode .code-block-header{
+  background:#171717;
+}
+
+/* ---------- Attachment chip / file chip backgrounds ---------- */
+body.dark-mode .attach-chip{
+  background:#2a2a2a;
+  border-color:var(--border);
+}
+body.dark-mode .msg-file-chip{
+  border-color:var(--border);
+  color:var(--text-soft);
+}
+
+/* ---------- Send button stays high-contrast in dark mode too ---------- */
+body.dark-mode #send-btn{
+  background:#ececec;
+  color:#111;
+}
+body.dark-mode #send-btn:hover{
+  background:#fff;
+}
+body.dark-mode #send-btn:disabled{
+  background:#3a3a3a;
+  color:#777;
+}
+
+/* ---------- Sidebar overlay slightly darker backdrop on dark mode ---------- */
+body.dark-mode #sidebar-overlay{
+  background:rgba(0,0,0,.55);
+}
+
+/* ---------- Dark mode toggle button icon swap (JS swaps text 🌙/☀️, this just aligns it) ---------- */
+body.dark-mode #theme-toggle-btn{
+  color:#f5d76e;
+}
+
+/* ---------- Scrollbars (webkit) ---------- */
+body.dark-mode ::-webkit-scrollbar{ width:8px; height:8px; }
+body.dark-mode ::-webkit-scrollbar-track{ background:#171717; }
+body.dark-mode ::-webkit-scrollbar-thumb{ background:#3a3a3a; border-radius:8px; }
+body.dark-mode ::-webkit-scrollbar-thumb:hover{ background:#4a4a4a; }
