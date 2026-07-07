@@ -1,0 +1,24 @@
+# Node
+node_modules/
+
+# Build
+build/
+dist/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+
+# Gradle
+.gradle/
+
+# Backup
+backup/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
