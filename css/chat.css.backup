@@ -1,8 +1,8 @@
 /* =========================================================
-   AMIT AI — chat.css (UPDATED: video thinking bubble added)
+   AMIT AI — chat.css
    Message rows, bubbles, attachments, message actions,
-   typing indicator, rendered-markdown / code-block styling,
-   and the new video-based "thinking" animation.
+   typing indicator, and rendered-markdown / code-block
+   styling (used by markdown.js for streamed replies).
    ========================================================= */
 
 #chat-area{
@@ -49,7 +49,7 @@
 }
 .msg-actions button:hover{ background:#f0f0f0; color:var(--text); }
 
-/* ---------- Typing indicator (legacy dots — kept, unused by default now) ---------- */
+/* ---------- Typing / thinking indicator ---------- */
 .typing{ display:flex; gap:4px; padding:4px 0; }
 .typing span{
   width:6px;height:6px;border-radius:50%;background:#9a9aa5;
@@ -58,23 +58,6 @@
 .typing span:nth-child(2){ animation-delay:.2s; }
 .typing span:nth-child(3){ animation-delay:.4s; }
 @keyframes blink{ 0%,80%,100%{ opacity:.25; } 40%{ opacity:1; } }
-
-/* ---------- Thinking bubble (NEW: video-based) ---------- */
-.thinking-bubble{
-  display:flex;
-  align-items:center;
-  padding:2px 0;
-}
-.thinking-video{
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  overflow:hidden;
-  object-fit:cover;
-  background:transparent;
-  display:block;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
 
 /* ---------- Markdown rendering (used by markdown.js) ---------- */
 .msg-text h1, .msg-text h2, .msg-text h3{ margin:14px 0 8px; line-height:1.3; }

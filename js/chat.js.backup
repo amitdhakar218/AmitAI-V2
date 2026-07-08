@@ -1,5 +1,5 @@
 /* =========================================================
-   AMIT AI — chat.js (UPDATED: video thinking bubble)
+   AMIT AI — chat.js
    Core chat engine: renders messages, wires the input bar,
    and orchestrates Plugins -> Memory -> Internet -> Api ->
    Markdown -> Voice for every send/receive cycle.
@@ -168,14 +168,8 @@ window.Chat = (function () {
 
   /* ---------------------------------------------------------
      showTypingIndicator / removeTypingIndicator
-     UPDATED: now plays assets/logo/thinking.mp4 inside the
-     bubble instead of the old dot animation. Same #typing-row
-     id is reused so every existing call site needs no changes.
-     Guarded so it can never be shown twice at once.
   --------------------------------------------------------- */
   function showTypingIndicator() {
-    if (document.getElementById("typing-row")) return; // never show two at once
-
     const row = document.createElement("div");
     row.className = "msg-row ai";
     row.id = "typing-row";
@@ -183,9 +177,7 @@ window.Chat = (function () {
       <div class="avatar ai">A</div>
       <div class="msg-content">
         <div class="msg-role">Amit AI</div>
-        <div class="thinking-bubble">
-          <video class="thinking-video" src="assets/logo/thinking.mp4" autoplay muted loop playsinline></video>
-        </div>
+        <div class="typing"><span></span><span></span><span></span></div>
       </div>`;
     chatAreaEl.appendChild(row);
     scrollToBottom();
@@ -193,18 +185,7 @@ window.Chat = (function () {
 
   function removeTypingIndicator() {
     const row = document.getElementById("typing-row");
-    if (!row) return;
-
-    // Explicitly stop the video before removing, so Android
-    // WebView doesn't keep decoding a detached video element.
-    const video = row.querySelector(".thinking-video");
-    if (video) {
-      video.pause();
-      video.removeAttribute("src");
-      video.load();
-    }
-
-    row.remove();
+    if (row) row.remove();
   }
 
   /* ---------------------------------------------------------
@@ -361,7 +342,7 @@ window.Chat = (function () {
       showWelcome();
     });
 
-    // Voice transcript flows into the text input, live amit 
+    // Voice transcript flows into the text input, live
     Utils.bus.on("voice:transcript", ({ text }) => {
       textInput.value = text;
       Utils.autoGrowTextarea(textInput);

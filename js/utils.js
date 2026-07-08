@@ -1,168 +1,184 @@
-/* =========================================================
-   AMIT AI — utils.js
-   Generic, dependency-free helper functions.
-   No other module is imported here. Every other file may
-   use window.Utils.
-   ========================================================= */
+/*
+=========================================================
+ AMIT AI
+ utils.js
+ Common helper functions
+=========================================================
+*/
 
-window.Utils = (function () {
+(function () {
 
-  /* ---------- Unique ID generator ---------- */
-  function uid(prefix) {
-    prefix = prefix || "id";
-    return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
-  }
+const Utils = {
 
-  /* ---------- Safe HTML escaping (prevents XSS when inserting user/AI text) ---------- */
-  function escapeHtml(str) {
-    if (str === null || str === undefined) return "";
+  // -----------------------------
+  // Short selector
+  // -----------------------------
+  $(selector){
+    return document.querySelector(selector);
+  },
+
+  $all(selector){
+    return document.querySelectorAll(selector);
+  },
+
+  // -----------------------------
+  // Create random id
+  // -----------------------------
+  uid(){
+    return "id_" +
+      Date.now() +
+      "_" +
+      Math.random().toString(36).substring(2,8);
+  },
+
+  // -----------------------------
+  // HTML Escape
+  // -----------------------------
+  escape(text){
+
+    if(text === null || text === undefined)
+      return "";
+
     const div = document.createElement("div");
-    div.innerText = String(str);
+    div.textContent = text;
+
     return div.innerHTML;
-  }
+  },
 
-  /* ---------- Debounce (used by history search input) ---------- */
-  function debounce(fn, delay) {
-    let timer = null;
-    return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), delay);
-    };
-  }
+  // -----------------------------
+  // Copy text
+  // -----------------------------
+  async copy(text){
 
-  /* ---------- Safe localStorage wrapper (JSON-aware) ---------- */
-  const storage = {
-    get(key, fallback) {
-      try {
-        const raw = localStorage.getItem(key);
-        if (raw === null) return fallback;
-        return JSON.parse(raw);
-      } catch (e) {
-        console.warn("[Utils.storage.get] failed for key:", key, e);
-        return fallback;
-      }
-    },
-    set(key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-        return true;
-      } catch (e) {
-        console.warn("[Utils.storage.set] failed for key:", key, e);
-        return false;
-      }
-    },
-    remove(key) {
-      try {
-        localStorage.removeItem(key);
-      } catch (e) {
-        console.warn("[Utils.storage.remove] failed for key:", key, e);
-      }
+    try{
+
+      await navigator.clipboard.writeText(text);
+
+      return true;
+
+    }catch(e){
+
+      console.error(e);
+
+      return false;
+
     }
-  };
 
-  /* ---------- File -> base64 (used by upload.js / ocr.js / pdf.js) ---------- */
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.onerror = (e) => reject(e);
-      reader.readAsDataURL(file);
-    });
-  }
+  },
 
-  /* ---------- File -> plain text (used by pdf.js / ocr.js if needed) ---------- */
-  function fileToText(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.onerror = (e) => reject(e);
-      reader.readAsText(file);
-    });
-  }
+  // -----------------------------
+  // Local Storage
+  // -----------------------------
+  save(key,value){
 
-  /* ---------- Human-readable file size ---------- */
-  function formatFileSize(bytes) {
-    if (bytes === 0) return "0 B";
-    const units = ["B", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return (bytes / Math.pow(1024, i)).toFixed(1) + " " + units[i];
-  }
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
 
-  /* ---------- Textarea auto-grow ---------- */
-  function autoGrowTextarea(el, maxHeight) {
-    maxHeight = maxHeight || 140;
-    el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, maxHeight) + "px";
-  }
+  },
 
-  /* ---------- Format timestamp -> readable date/time ---------- */
-  function formatTime(ts) {
-    const d = new Date(ts);
-    return d.toLocaleString("hi-IN", {
-      day: "2-digit", month: "short",
-      hour: "2-digit", minute: "2-digit"
-    });
-  }
+  load(key,def=null){
 
-  /* ---------- Clipboard copy helper ---------- */
-  function copyToClipboard(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
+    try{
+
+      const x = localStorage.getItem(key);
+
+      if(!x) return def;
+
+      return JSON.parse(x);
+
+    }catch(e){
+
+      return def;
+
     }
-    // fallback for older webviews
-    return new Promise((resolve, reject) => {
-      try {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
+
+  },
+
+  remove(key){
+
+    localStorage.removeItem(key);
+
+  },
+
+  // -----------------------------
+  // Delay
+  // -----------------------------
+  wait(ms){
+
+    return new Promise(resolve=>{
+
+      setTimeout(resolve,ms);
+
     });
+
+  },
+
+  // -----------------------------
+  // Scroll
+  // -----------------------------
+  scrollBottom(){
+
+    const chat=$("#chat-area");
+
+    if(chat){
+
+      chat.scrollTop=chat.scrollHeight;
+
+    }
+
+  },
+
+  // -----------------------------
+  // Auto textarea
+  // -----------------------------
+  autoGrow(el){
+
+    el.style.height="auto";
+
+    el.style.height=
+      Math.min(el.scrollHeight,140)+"px";
+
+  },
+
+  // -----------------------------
+  // Toast
+  // -----------------------------
+  toast(msg){
+
+    let t=document.createElement("div");
+
+    t.textContent=msg;
+
+    t.style.position="fixed";
+    t.style.bottom="25px";
+    t.style.left="50%";
+    t.style.transform="translateX(-50%)";
+
+    t.style.background="#111";
+    t.style.color="#fff";
+
+    t.style.padding="10px 18px";
+
+    t.style.borderRadius="10px";
+
+    t.style.fontSize="14px";
+
+    t.style.zIndex="99999";
+
+    document.body.appendChild(t);
+
+    setTimeout(()=>{
+
+      t.remove();
+
+    },1800);
+
   }
 
-  /* ---------- Tiny event emitter (pub/sub) so modules can talk
-     without directly depending on each other's internals) ---------- */
-  function createEmitter() {
-    const listeners = {};
-    return {
-      on(event, cb) {
-        (listeners[event] = listeners[event] || []).push(cb);
-      },
-      off(event, cb) {
-        if (!listeners[event]) return;
-        listeners[event] = listeners[event].filter(fn => fn !== cb);
-      },
-      emit(event, payload) {
-        (listeners[event] || []).forEach(cb => {
-          try { cb(payload); } catch (e) { console.error(`[Emitter] listener error on "${event}"`, e); }
-        });
-      }
-    };
-  }
+};
 
-  /* Global shared bus — modules can do Utils.bus.on(...) / Utils.bus.emit(...) */
-  const bus = createEmitter();
-
-  return {
-    uid,
-    escapeHtml,
-    debounce,
-    storage,
-    fileToBase64,
-    fileToText,
-    formatFileSize,
-    autoGrowTextarea,
-    formatTime,
-    copyToClipboard,
-    createEmitter,
-    bus
-  };
+window.Utils=Utils;
 
 })();
