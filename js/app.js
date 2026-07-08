@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     Upload.init();
     Sidebar.init();
     Chat.init();
+    Settings.init();
 
     // ---- Resume last chat, or start a new one ----
     const allChats = History.getAllChats();
